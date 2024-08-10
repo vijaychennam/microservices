@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: vehicle-gateway
+
+  cloud:
+    gateway:
+      routes:
+
+        - id: SHOWROOM-SERVICE
+          uri: lb://showroom-service
+          predicates:
+            - Path=/showroom/**
+          filters:
+            - AuthenticationFilter
+
+        - id: vehicle-service
+          uri: lb://vehicle-service
+          predicates:
+            - Path=/vehicle/**
+          filters:
+            - AuthenticationFilter
+
+        - id: INVENTORY-SERVICE
+          uri: lb://inventory-service
+          predicates:
+            - Path=/inventory/**
+          filters:
+            - AuthenticationFilter
+
+        - id: SALES-SERVICE
+          uri: lb://sales-service
+          predicates:
+            - Path=/sales/**
+          filters:
+            - AuthenticationFilter
+
+        - id: AUTH-SERVICE
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8080
